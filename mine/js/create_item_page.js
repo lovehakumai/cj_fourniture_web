@@ -1,41 +1,22 @@
-/* 
-======================================================
-画像のリストを読み込み
-======================================================
-*/
-const item_list = document.querySelector('#item-list');
-let item_img_path = "";
-let item_img_alt = "";
-const currentUrl = window.location.href;
-const match = currentUrl.match(/[^\/]+\.html$/);
-let fileName;
-if(match) {
-    fileName = match[0];
-    console.log("URL : " + match);
-}
+document.addEventListener('DOMContentLoaded', ()=>{
+    // DOMContentLoadedが発火した後でURLパラメータから値を取得する。
+    // DOMContentLoadedが完了する前にURLパラメータを取得することはできない
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+    console.log("id : "+id);
 
-function show_products(){
-    console.log("URL : " + match);
-    if(fileName === "products.html"){
-        for(i=1;i<=12;i++){
-            console.log("index : " + i);
-            item_img_path = "../img/"+"item" + i+ ".jpg";
-            item_img_alt = "item"+i;
-            item_list.innerHTML += `<div class="item"><a href="item.html?id=${i}"><img src="${item_img_path}" alt="${item_img_alt}"></a><div class="product_name">Product Name</div><p>￥99,999 + tax</p></div>`;
-            console.log("no : "+ i + " / " + item_list)
-        }
-    }else{
-        for(i=1;i<=8;i++){
-            console.log("products : " + i);
-            item_img_path = "../img/"+"item" + i+ ".jpg";
-            item_img_alt = "item"+i;
-            item_list.innerHTML += `<div class="item"><a href="item.html?id=${i}"><img src="${item_img_path}" alt="${item_img_alt}"></a><div class="product_name">Product Name</div><p>￥99,999 + tax</p></div>`;
-            console.log("no : "+ i + " / " + item_list)
-        }
-    }
-}
+    const itemTag = document.querySelector("#product-image");
+    console.log("itemTag : " + itemTag);
 
-document.addEventListener('DOMContentLoaded',show_products);
+    if(itemTag){
+        function insertItemImage (id){
+        const imgPath = `../../img/item${id}.jpg`;
+        itemTag.innerHTML = `<img src=${imgPath} alt=${imgPath}>`;
+        };
+        insertItemImage(id);
+    };
+
+});
 
 /* 
 ======================================================
@@ -81,4 +62,3 @@ function toggleHamburger () {
 };
 
 hamburgerBtn.addEventListener('click',toggleHamburger);
-
