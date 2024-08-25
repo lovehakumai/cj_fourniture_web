@@ -1,0 +1,380 @@
+@charset "UTF-8";
+
+html {
+    font-size: 100%;
+}
+/* 
+フッターを画面下に配置するために
+「position: relative;」を設定
+「min-height」で最小の高さを画面の高さに合わせる
+*/
+body {
+    color: #333;
+    font-size: 0.875rem;
+    min-height: 100vh;
+    position: relative;
+}
+a {
+    color: #333;
+    text-decoration: none;
+    transition: all 0.5s;
+    /* all : translate,opacityなどアニメーションの完了までの時間を設定できるプロパティに全て0,5を適用 */
+}
+a:hover {
+    opacity: 0.7;
+}
+img {
+    max-width: 100%;
+}
+li {
+    list-style: none;
+}
+/* 
+コンテンツ幅を設定するための共通クラス
+*/
+.wrapper {
+    width: 100%;
+    max-width: 1360px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+.content {
+    /* 他のHTMLファイルで使われるCSSもまたいで作成する */
+    padding-top: 120px;
+    padding-bottom: 160px;
+}
+.site-title a {
+  /* 
+    元々インライン要素であるaタグはロゴ以外の行全体に対してリンクが適用されている
+    ブロック要素にすることで幅や高さを指定できる
+  */
+    width: 180px;
+    line-height: 1px;
+    display: block;
+}
+.page-title {
+    /* 
+        about.htmlなどで使うもの
+    */
+    font-size: 0.875rem;
+    font-weight: normal;
+    margin-bottom: 30px;
+}
+
+/* ------------------------------------
+HEADER
+------------------------------------*/
+/* 
+z-indexはpositionがfixed, relative, absoluteのいずれかで適用できる。
+*/
+#header {
+    width: 100%;
+    height: 80px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    /* 
+    画面いっぱいに広げる
+        
+        width:100%;
+        position:fixed;とleft, right:0;の組み合わせ
+
+    絶対位置を指定する時は後者を使うと確実に実現できる
+    */
+    left: 0;
+    right: 0;
+    z-index: 10;
+}
+/* 
+Humburger menu
+*/
+#navi {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 300px;
+    color: #fff;
+    /*　
+        何故paddingなんだろう、marginでも同じ画面表示になる  
+        考えられること : paddingにすると要素自体が大きくなる, marginは要素のサイズは同一で周りが大きくなる
+    */
+    padding: 36px 50px;
+    /* margin: 36px 50px; */
+    transition: all 0.5;
+    z-index: 20;
+    opacity: 0;
+}
+#navi a {
+    color: #fff;
+}
+#navi li {
+    margin-bottom: 14px;
+}
+/* 
+Humburger Open
+*/
+.open #navi {
+    left: 0;
+    opacity: 1;
+}
+.toggle_btn {
+    width: 30px;
+    height: 30px;
+    /* background-color: #333; */
+    position: relative;
+    transition: all 0.5s;
+    cursor: pointer;
+    z-index: 20;
+    /* naviと同じ層で表示できる */
+}
+
+/* 
+Humburger line
+*/
+.toggle_btn span {
+    display: block;
+    /* 
+        absoluteはデフォルトでは画面全体を基準とした位置になるが、
+        親要素がfixed, relativeで指定されている場合、親の配置を基準にして場所を指定できる
+        この時、spanの親はdivタグ(toggle_btn)になっているので指定した
+    */
+    position: absolute;
+    background-color:#333;
+    width: 30px;
+    height: 2px;
+    border-radius: 4px;
+    transition: all 0.5s;
+}
+/* 
+    1st line
+*/
+.toggle_btn span:first-child {
+    top: 10px;
+}
+.toggle_btn span:last-child {
+    bottom: 10px;
+}
+/* 
+    Humbergur open : white 
+*/
+.open .toggle_btn span {
+    background-color: #fff;
+}
+.open .toggle_btn span:first-child {
+    transform: translateY(4px) rotate(-45deg);
+}
+.open .toggle_btn span:last-child {
+    transform: translateY(-4px) rotate(45deg);
+}
+#mask {
+    display: none;
+    transition: all 0.5s;
+}
+/* 
+    #mask : when menu is open, that background turn tobe black
+*/
+.open #mask {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:#000;
+    opacity: .8;
+    /* 
+        headerタグと同じ層なんだけど、なんでheaderの上の層に行くのか
+        スタッキングコンテキスト : z-indexが同じ場合、後にDOM定義されたものが一番上に配置される
+        と言うことが理由
+    */
+    z-index: 10;
+    cursor: pointer;
+}
+
+/* ----------------------------
+TOP, PRODUCTS
+----------------------------*/
+#top {
+    /* 
+        Fixedの範囲から下に下げるのはpaddingを使っている 
+        marginにするとfixedにしたヘッダー部分の上に空間ができてしまう
+    */
+    padding-top: 80px;
+    padding-bottom: 160px;
+}
+.product-list {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 35px;
+}
+.product-list img {
+    margin-bottom: 10px;
+    vertical-align: top;
+}
+.product-list p {
+    font-size: 0.75rem;
+}
+.link-text {
+    display: block;
+    margin-top: 40px;
+    text-align: center;
+}
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+.pagination li {
+    padding: 0 20px;
+}
+
+/* ----------------------------
+ITEM
+----------------------------*/
+#item {
+    max-width: 800px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 60px;
+}
+#item .item-text {
+    width: 42%;
+}
+#item .item-text p {
+    margin-bottom: 30px;
+    /* 両端を揃える */
+    text-align: justify;
+}
+#item .item-text dl {
+    display: flex;
+    /* flexアイテムで行がはみ出る場合の折り返し方を指定。この時は上から下に折り返すようになっている */
+    flex-wrap: wrap;
+}
+#item .item-text dt {
+    width: 30%;
+}
+#item .item-text dd {
+    width: 70%;
+}
+#item .item-img {
+    width: 50%;
+}
+/*-------------------------------------------
+ABOUT
+-------------------------------------------*/
+#about {
+    max-width: 600px;
+  }
+  #about p {
+    line-height: 1.9;
+    margin-bottom: 30px;
+  }
+  
+/* ----------------------------
+COMPANY
+----------------------------*/
+#company {
+    max-width: 600px;
+}
+#company dl {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+#company dt {
+    width: 30%;
+    border-bottom: solid 1px #dcdbdb;
+    padding: 20px 10px;
+}
+#company dt:last-of-type {
+    border-bottom: none;
+}
+#company dd {
+    width: 70%;
+    border-bottom: solid 1px #dcdbdb;
+    padding: 20px 10px;
+}
+#company dd:last-of-type {
+    border-bottom: none;
+}
+#company .map {
+    /* グーグルマップをグレースケールにする */
+    filter: grayscale(1);
+}
+#company .map iframe {
+    width: 100%;
+    height: 300px;
+    border: 0;
+}
+/*-------------------------------------------
+Footer
+-------------------------------------------*/
+#footer {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 20px;
+}
+#footer .menu {
+    display: flex;
+}
+#footer .menu li {
+    font-size: 0.75rem;
+    margin-right: 30px;
+}
+#footer .copyright {
+    font-size: 0.625rem;
+}
+/*-------------------------------------------
+SP
+-------------------------------------------*/
+@media screen and (max-width:900px){
+    /*------------------------- 
+    TOP, PRODUCTS
+    ----------------------------*/
+    .product-list {
+        grid-template-columns: repeat(2,1fr);
+        gap: 40px 20px;
+    }
+    /*-------------------------------------------
+    ITEM
+    -------------------------------------------*/
+    #item {
+        flex-direction: column;
+    }
+    #item .item-text {
+        width: 100%;
+    }
+    #item .item-img {
+        width: 100%;
+        margin-bottom: 30px;
+    }
+    /*-------------------------------------------
+    COMPANY
+    -------------------------------------------*/
+    #company dl {
+        flex-direction: column;
+    }
+    #company dt {
+        width: 100%;
+        border-bottom: none;
+        padding-bottom: 5px;
+    }
+    #company dd {
+        width: 100%;
+        padding-top: 5px;
+    }
+    /*-------------------------------------------
+    FOOTER
+    -------------------------------------------*/
+    #footer {
+        flex-direction: column;
+    }
+    #footer .menu {
+        margin-bottom: 5px;
+    }
+}
